@@ -1,4 +1,5 @@
 using CMSByTeamJava.Models;
+using CMSByTeamJava.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +30,8 @@ namespace CMSByTeamJava
         {
             services.AddControllers();
             services.AddDbContext<CLINIC_DBContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DevelopConnection")));
+            services.AddScoped<IUsersRepository, UsersRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
