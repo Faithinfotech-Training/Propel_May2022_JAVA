@@ -31,6 +31,7 @@ namespace CMSByTeamJava
             services.AddControllers();
             services.AddDbContext<CLINIC_DBContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DevelopConnection")));
             services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IDoctorsRepository, DoctorsRepository>();
 
         }
 
