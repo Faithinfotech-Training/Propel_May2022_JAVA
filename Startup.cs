@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,20 @@ namespace CMSByTeamJava
             services.AddControllers();
             services.AddDbContext<CLINIC_DBContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DevelopConnection")));
             services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IStaffRepository, StaffsRepository>();
+            services.AddScoped<IPharmacistRepository, pharmacistsRepository>();
+
+
+
+            services.AddControllers().AddNewtonsoftJson(OptionsBuilderConfigurationExtensions =>
+            {
+                OptionsBuilderConfigurationExtensions.SerializerSettings.ContractResolver = new DefaultContractResolver();
+
+                //enables to avoid infitive loop 
+                OptionsBuilderConfigurationExtensions.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+
+            });
 
         }
 
