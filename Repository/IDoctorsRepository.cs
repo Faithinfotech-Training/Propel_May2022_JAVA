@@ -23,7 +23,8 @@ namespace CMSByTeamJava.Repository
 
         #region medicine prescribed
 
-             
+        public Task<ActionResult<IEnumerable<Medicineprescription>>> GettheMedicineprescription();
+        public Task<ActionResult<Medicineprescription>> PosttheMedicineprescription(Medicineprescription medicineprescription);
 
         #endregion
 

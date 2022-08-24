@@ -44,6 +44,8 @@ namespace CMSByTeamJava.Repository
             return null;
         }
 
+       
+
         #endregion
 
         #region Diagnose Controller
@@ -74,6 +76,46 @@ namespace CMSByTeamJava.Repository
             }
             return null;
         }
+
+       
+        #endregion
+
+
+        #region Med prescribe Controller
+
+        public async Task<ActionResult<IEnumerable<Medicineprescription>>> GettheMedicineprescription()
+        {
+            if (_context != null)
+            {
+
+                return await _context.Medicineprescription.ToListAsync();
+
+            }
+            return null;
+        }
+
+        public async Task<ActionResult<Medicineprescription>> PosttheMedicineprescription(Medicineprescription medicineprescription)
+        {
+            if (_context != null)
+            {
+
+
+                _context.Medicineprescription.Add(medicineprescription);
+                await _context.SaveChangesAsync();
+
+                return medicineprescription;
+
+
+            }
+            return null;
+        }
+
+        #endregion
+
+        #region Med prescribe Controller
+
+
+
         #endregion
     }
 
