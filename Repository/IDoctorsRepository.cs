@@ -28,5 +28,11 @@ namespace CMSByTeamJava.Repository
 
         #endregion
 
+
+        #region lab test view
+
+        public Task<ActionResult<IEnumerable<Doctorlabviewmodel>>> GetLabViewModel();
+
+        #endregion
     }
 }

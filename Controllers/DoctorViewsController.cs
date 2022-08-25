@@ -26,7 +26,7 @@ namespace CMSByTeamJava.Controllers
         [HttpGet("Dashboard")]
         public async Task<ActionResult<IEnumerable<Doctorsviewmodel>>> GetDoctorsViewModel()
         {
-            
+
             return await _repository.GetDoctorsViewModel();
         }
 
@@ -37,7 +37,7 @@ namespace CMSByTeamJava.Controllers
         #region Doctor Diagnose notes
 
         // GET: api/doctorViews/DiagnoseNotes
-        [HttpGet ("DiagnoseNotes")]
+        [HttpGet("DiagnoseNotes")]
         public async Task<ActionResult<IEnumerable<Prescription>>> GetPrescription()
         {
             //return await _context.Prescription.ToListAsync();
@@ -72,6 +72,17 @@ namespace CMSByTeamJava.Controllers
 
         }
 
+
+        #endregion
+
+
+        #region lab view
+
+        [HttpGet("labview")]
+        public async Task<ActionResult<IEnumerable<Doctorlabviewmodel>>> GetLabViewModel()
+        {
+            return await _repository.GetLabViewModel();
+        }
 
         #endregion
 

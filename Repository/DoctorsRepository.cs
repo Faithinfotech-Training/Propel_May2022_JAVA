@@ -31,6 +31,7 @@ namespace CMSByTeamJava.Repository
 
                 return await(from e in _context.Appointment
                              from d in _context.Patient
+                            
                              where e.PatientId == d.PatientId & (e.AppointmentDate >= startDateTime && e.AppointmentDate <= endDateTime)
                              select new Doctorsviewmodel
                              {
@@ -88,7 +89,7 @@ namespace CMSByTeamJava.Repository
             if (_context != null)
             {
 
-                return await _context.Medicineprescription.ToListAsync();
+                return await _context.Medicineprescription.Include(e => e.MedicineTiming).ToListAsync();
 
             }
             return null;
@@ -117,6 +118,44 @@ namespace CMSByTeamJava.Repository
 
 
         #endregion
+
+
+        #region Lab view model
+
+        public async Task<ActionResult<IEnumerable<Doctorlabviewmodel>>> GetLabViewModel()
+        {
+            if (_context != null)
+            {
+             
+                return await (from a in _context.Appointment
+                              from b in _context.Prescription
+                              from c in _context.Labtest
+                              from d in _context.Patient
+                              from e in _context.TestView
+                              from f in _context.Testprescription
+                              where (a.AppointmentId == b.AppointmentId) && (e.TestprescriptionId == f.TestprescriptionId ) &&(f.TestId == c.TestId) && 
+                              (f.PrescriptionId == b.PrescriptionId) && (b.AppointmentId == a.AppointmentId) && (a.PatientId == d.PatientId)
+
+                              select new Doctorlabviewmodel
+                              {
+                                  PatientName = d.PatientName,
+                                  TestName = c.TestName,
+                                  HighRange = e.HighRange,
+                                  LowRange = e.LowRange,
+                                  NormalRange = e.NormalRange
+
+                              }).ToListAsync();
+            }
+            return null;
+
+        }
+
+
+
+        #endregion
+
+
+
     }
 
 }
