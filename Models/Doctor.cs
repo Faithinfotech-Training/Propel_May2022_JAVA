@@ -12,6 +12,7 @@ namespace CMSByTeamJava.Models
         public Doctor()
         {
             Appointment = new HashSet<Appointment>();
+            Medicineprescription = new HashSet<Medicineprescription>();
         }
 
         public int DoctorId { get; set; }
@@ -24,5 +25,6 @@ namespace CMSByTeamJava.Models
         public virtual Specialization Specialization { get; set; }
         public virtual Staff Staff { get; set; }
         public virtual ICollection<Appointment> Appointment { get; set; }
+        public virtual ICollection<Medicineprescription> Medicineprescription { get; set; }
     }
 }

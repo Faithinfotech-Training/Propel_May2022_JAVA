@@ -12,6 +12,8 @@ namespace CMSByTeamJava.Models
         public Patient()
         {
             Appointment = new HashSet<Appointment>();
+            BillTable = new HashSet<BillTable>();
+            Medicineprescription = new HashSet<Medicineprescription>();
         }
 
         public int PatientId { get; set; }
@@ -31,5 +33,7 @@ namespace CMSByTeamJava.Models
         public virtual Gender Gender { get; set; }
         public virtual Staff Staff { get; set; }
         public virtual ICollection<Appointment> Appointment { get; set; }
+        public virtual ICollection<BillTable> BillTable { get; set; }
+        public virtual ICollection<Medicineprescription> Medicineprescription { get; set; }
     }
 }

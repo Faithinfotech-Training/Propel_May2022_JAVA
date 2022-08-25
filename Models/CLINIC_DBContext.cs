@@ -20,6 +20,7 @@ namespace CMSByTeamJava.Models
         }
 
         public virtual DbSet<Appointment> Appointment { get; set; }
+        public virtual DbSet<BillTable> BillTable { get; set; }
         public virtual DbSet<BloodGroup> BloodGroup { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Doctor> Doctor { get; set; }
@@ -71,17 +72,49 @@ namespace CMSByTeamJava.Models
                     .WithMany(p => p.Appointment)
                     .HasForeignKey(d => d.DepartmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Appointme__Depar__7D439ABD");
+                    .HasConstraintName("FK__Appointme__Depar__6D0D32F4");
 
                 entity.HasOne(d => d.Doctor)
                     .WithMany(p => p.Appointment)
                     .HasForeignKey(d => d.DoctorId)
-                    .HasConstraintName("FK__Appointme__Docto__7F2BE32F");
+                    .HasConstraintName("FK__Appointme__Docto__6E01572D");
 
                 entity.HasOne(d => d.Patient)
                     .WithMany(p => p.Appointment)
                     .HasForeignKey(d => d.PatientId)
-                    .HasConstraintName("FK__Appointme__Patie__01142BA1");
+                    .HasConstraintName("FK__Appointme__Patie__6EF57B66");
+            });
+
+            modelBuilder.Entity<BillTable>(entity =>
+            {
+                entity.HasKey(e => e.BillNumber)
+                    .HasName("PK__Bill_Tab__9D3029B9AB6824E6");
+
+                entity.ToTable("Bill_Table");
+
+                entity.Property(e => e.BillNumber).HasColumnName("Bill_Number");
+
+                entity.Property(e => e.BillAmount)
+                    .HasColumnName("Bill_Amount")
+                    .HasColumnType("numeric(10, 2)");
+
+                entity.Property(e => e.BillDate)
+                    .HasColumnName("Bill_Date")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.BillingId).HasColumnName("Billing_Id");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("Created_Date")
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.PatientId).HasColumnName("Patient_Id");
+
+                entity.HasOne(d => d.Patient)
+                    .WithMany(p => p.BillTable)
+                    .HasForeignKey(d => d.PatientId)
+                    .HasConstraintName("FK__Bill_Tabl__Patie__17F790F9");
             });
 
             modelBuilder.Entity<BloodGroup>(entity =>
@@ -123,19 +156,19 @@ namespace CMSByTeamJava.Models
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Doctor)
                     .HasForeignKey(d => d.DepartmentId)
-                    .HasConstraintName("FK__Doctor__Departme__5812160E");
+                    .HasConstraintName("FK__Doctor__Departme__6FE99F9F");
 
                 entity.HasOne(d => d.Specialization)
                     .WithMany(p => p.Doctor)
                     .HasForeignKey(d => d.SpecializationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Doctor__Speciali__59063A47");
+                    .HasConstraintName("FK__Doctor__Speciali__70DDC3D8");
 
                 entity.HasOne(d => d.Staff)
                     .WithMany(p => p.Doctor)
                     .HasForeignKey(d => d.StaffId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Doctor__Staff_Id__59FA5E80");
+                    .HasConstraintName("FK__Doctor__Staff_Id__71D1E811");
             });
 
             modelBuilder.Entity<Gender>(entity =>
@@ -152,7 +185,7 @@ namespace CMSByTeamJava.Models
             modelBuilder.Entity<Labtest>(entity =>
             {
                 entity.HasKey(e => e.TestId)
-                    .HasName("PK__Labtest__B502D022435D75AD");
+                    .HasName("PK__Labtest__B502D022CBA6E934");
 
                 entity.Property(e => e.TestId).HasColumnName("Test_Id");
 
@@ -257,7 +290,7 @@ namespace CMSByTeamJava.Models
                 entity.HasOne(d => d.Medicineprescription)
                     .WithMany(p => p.MedicineView)
                     .HasForeignKey(d => d.MedicineprescriptionId)
-                    .HasConstraintName("FK__Medicine___Medic__2EDAF651");
+                    .HasConstraintName("FK__Medicine___Medic__72C60C4A");
             });
 
             modelBuilder.Entity<Medicineprescription>(entity =>
@@ -273,6 +306,8 @@ namespace CMSByTeamJava.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.DoctorId).HasColumnName("Doctor_Id");
+
                 entity.Property(e => e.MedicineId).HasColumnName("Medicine_Id");
 
                 entity.Property(e => e.MedicineTimingId).HasColumnName("Medicine_Timing_Id");
@@ -282,22 +317,34 @@ namespace CMSByTeamJava.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.PatientId).HasColumnName("Patient_Id");
+
                 entity.Property(e => e.PrescriptionId).HasColumnName("Prescription_Id");
+
+                entity.HasOne(d => d.Doctor)
+                    .WithMany(p => p.Medicineprescription)
+                    .HasForeignKey(d => d.DoctorId)
+                    .HasConstraintName("FK__Medicinep__Docto__73BA3083");
 
                 entity.HasOne(d => d.Medicine)
                     .WithMany(p => p.Medicineprescription)
                     .HasForeignKey(d => d.MedicineId)
-                    .HasConstraintName("FK__Medicinep__Medic__22751F6C");
+                    .HasConstraintName("FK__Medicinep__Medic__74AE54BC");
 
                 entity.HasOne(d => d.MedicineTiming)
                     .WithMany(p => p.Medicineprescription)
                     .HasForeignKey(d => d.MedicineTimingId)
-                    .HasConstraintName("FK__Medicinep__Medic__2645B050");
+                    .HasConstraintName("FK__Medicinep__Medic__75A278F5");
+
+                entity.HasOne(d => d.Patient)
+                    .WithMany(p => p.Medicineprescription)
+                    .HasForeignKey(d => d.PatientId)
+                    .HasConstraintName("FK__Medicinep__Patie__76969D2E");
 
                 entity.HasOne(d => d.Prescription)
                     .WithMany(p => p.Medicineprescription)
                     .HasForeignKey(d => d.PrescriptionId)
-                    .HasConstraintName("FK__Medicinep__Presc__245D67DE");
+                    .HasConstraintName("FK__Medicinep__Presc__778AC167");
             });
 
             modelBuilder.Entity<Patient>(entity =>
@@ -334,8 +381,7 @@ namespace CMSByTeamJava.Models
 
                 entity.Property(e => e.ModifiedDate)
                     .HasColumnName("Modified_date")
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.PatientName)
                     .IsRequired()
@@ -348,17 +394,17 @@ namespace CMSByTeamJava.Models
                 entity.HasOne(d => d.BloodGroup)
                     .WithMany(p => p.Patient)
                     .HasForeignKey(d => d.BloodGroupId)
-                    .HasConstraintName("FK__Patient__Blood_g__6A30C649");
+                    .HasConstraintName("FK__Patient__Blood_g__787EE5A0");
 
                 entity.HasOne(d => d.Gender)
                     .WithMany(p => p.Patient)
                     .HasForeignKey(d => d.GenderId)
-                    .HasConstraintName("FK__Patient__Gender___6E01572D");
+                    .HasConstraintName("FK__Patient__Gender___797309D9");
 
                 entity.HasOne(d => d.Staff)
                     .WithMany(p => p.Patient)
                     .HasForeignKey(d => d.StaffId)
-                    .HasConstraintName("FK__Patient__Staff_I__68487DD7");
+                    .HasConstraintName("FK__Patient__Staff_I__7A672E12");
             });
 
             modelBuilder.Entity<Prescription>(entity =>
@@ -385,13 +431,13 @@ namespace CMSByTeamJava.Models
                 entity.HasOne(d => d.Appointment)
                     .WithMany(p => p.Prescription)
                     .HasForeignKey(d => d.AppointmentId)
-                    .HasConstraintName("FK__Prescript__Appoi__1CBC4616");
+                    .HasConstraintName("FK__Prescript__Appoi__7B5B524B");
             });
 
             modelBuilder.Entity<ReportNote>(entity =>
             {
                 entity.HasKey(e => e.NoteId)
-                    .HasName("PK__ReportNo__F94B56A776D8A64A");
+                    .HasName("PK__ReportNo__F94B56A7F703EB7B");
 
                 entity.Property(e => e.NoteId).HasColumnName("Note_Id");
 
@@ -426,7 +472,7 @@ namespace CMSByTeamJava.Models
                 entity.HasOne(d => d.Prescription)
                     .WithMany(p => p.ReportNote)
                     .HasForeignKey(d => d.PrescriptionId)
-                    .HasConstraintName("FK__ReportNot__Presc__3493CFA7");
+                    .HasConstraintName("FK__ReportNot__Presc__7C4F7684");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -456,7 +502,7 @@ namespace CMSByTeamJava.Models
                     .WithMany(p => p.Specialization)
                     .HasForeignKey(d => d.DepartmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Specializ__Depar__5441852A");
+                    .HasConstraintName("FK__Specializ__Depar__7D439ABD");
             });
 
             modelBuilder.Entity<Staff>(entity =>
@@ -506,6 +552,8 @@ namespace CMSByTeamJava.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.RoleId).HasColumnName("Role_Id");
+
                 entity.Property(e => e.StaffName)
                     .IsRequired()
                     .HasColumnName("Staff_Name")
@@ -515,12 +563,17 @@ namespace CMSByTeamJava.Models
                 entity.HasOne(d => d.BloodGroup)
                     .WithMany(p => p.Staff)
                     .HasForeignKey(d => d.BloodGroupId)
-                    .HasConstraintName("FK__Staff__Blood_gro__45F365D3");
+                    .HasConstraintName("FK__Staff__Blood_gro__7E37BEF6");
 
                 entity.HasOne(d => d.Gender)
                     .WithMany(p => p.Staff)
                     .HasForeignKey(d => d.GenderId)
-                    .HasConstraintName("FK__Staff__Gender_Id__47DBAE45");
+                    .HasConstraintName("FK__Staff__Gender_Id__7F2BE32F");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Staff)
+                    .HasForeignKey(d => d.RoleId)
+                    .HasConstraintName("FK__Staff__Role_Id__14270015");
             });
 
             modelBuilder.Entity<TestView>(entity =>
@@ -567,7 +620,7 @@ namespace CMSByTeamJava.Models
                 entity.HasOne(d => d.Testprescription)
                     .WithMany(p => p.TestView)
                     .HasForeignKey(d => d.TestprescriptionId)
-                    .HasConstraintName("FK__Test_view__Testp__4F47C5E3");
+                    .HasConstraintName("FK__Test_view__Testp__00200768");
             });
 
             modelBuilder.Entity<Testprescription>(entity =>
@@ -591,18 +644,18 @@ namespace CMSByTeamJava.Models
                 entity.HasOne(d => d.Prescription)
                     .WithMany(p => p.Testprescription)
                     .HasForeignKey(d => d.PrescriptionId)
-                    .HasConstraintName("FK__Testpresc__Presc__41EDCAC5");
+                    .HasConstraintName("FK__Testpresc__Presc__01142BA1");
 
                 entity.HasOne(d => d.Test)
                     .WithMany(p => p.Testprescription)
                     .HasForeignKey(d => d.TestId)
-                    .HasConstraintName("FK__Testpresc__Test___43D61337");
+                    .HasConstraintName("FK__Testpresc__Test___02084FDA");
             });
 
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__Users__206D9170A5A601B5");
+                    .HasName("PK__Users__206D917057513DC7");
 
                 entity.Property(e => e.UserId).HasColumnName("User_Id");
 
@@ -623,12 +676,12 @@ namespace CMSByTeamJava.Models
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__Users__Role_Id__4D94879B");
+                    .HasConstraintName("FK__Users__Role_Id__02FC7413");
 
                 entity.HasOne(d => d.Staff)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.StaffId)
-                    .HasConstraintName("FK__Users__Staff_Id__4F7CD00D");
+                    .HasConstraintName("FK__Users__Staff_Id__03F0984C");
             });
 
             OnModelCreatingPartial(modelBuilder);

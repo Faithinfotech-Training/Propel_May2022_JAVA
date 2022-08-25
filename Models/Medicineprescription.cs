@@ -17,13 +17,17 @@ namespace CMSByTeamJava.Models
         public int MedicineprescriptionId { get; set; }
         public int? MedicineId { get; set; }
         public int? PrescriptionId { get; set; }
+        public int? PatientId { get; set; }
+        public int? DoctorId { get; set; }
         public int? MedicineTimingId { get; set; }
         public string Course { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
 
+        public virtual Doctor Doctor { get; set; }
         public virtual Medicine Medicine { get; set; }
         public virtual MedicineTiming MedicineTiming { get; set; }
+        public virtual Patient Patient { get; set; }
         public virtual Prescription Prescription { get; set; }
         public virtual ICollection<MedicineView> MedicineView { get; set; }
     }
