@@ -32,19 +32,7 @@ namespace CMSByTeamJava
             services.AddControllers();
             services.AddDbContext<CLINIC_DBContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DevelopConnection")));
             services.AddScoped<IUsersRepository, UsersRepository>();
-            services.AddScoped<IPatientsRepository, PatientsRepository>();
-            services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();
-
-            services.AddControllers().AddNewtonsoftJson(
-                options =>
-                {
-                    //enables text json - display exact match
-                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-
-                    //enables to avoid infinte loop - Recursive
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                });
-
+            //adding new repor
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
