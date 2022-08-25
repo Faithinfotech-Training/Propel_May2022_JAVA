@@ -20,6 +20,7 @@ namespace CMSByTeamJava.Models
         }
 
         public virtual DbSet<Appointment> Appointment { get; set; }
+        public virtual DbSet<BillTable> BillTable { get; set; }
         public virtual DbSet<BloodGroup> BloodGroup { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Doctor> Doctor { get; set; }
@@ -42,10 +43,10 @@ namespace CMSByTeamJava.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {/*
+            {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Data Source=DESKTOP-4JJAKA3\\SQLEXPRESS2012;Initial Catalog=CLINIC_DB;Integrated Security=True");
-          */  }
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -82,6 +83,38 @@ namespace CMSByTeamJava.Models
                     .WithMany(p => p.Appointment)
                     .HasForeignKey(d => d.PatientId)
                     .HasConstraintName("FK__Appointme__Patie__6EF57B66");
+            });
+
+            modelBuilder.Entity<BillTable>(entity =>
+            {
+                entity.HasKey(e => e.BillNumber)
+                    .HasName("PK__Bill_Tab__9D3029B9AB6824E6");
+
+                entity.ToTable("Bill_Table");
+
+                entity.Property(e => e.BillNumber).HasColumnName("Bill_Number");
+
+                entity.Property(e => e.BillAmount)
+                    .HasColumnName("Bill_Amount")
+                    .HasColumnType("numeric(10, 2)");
+
+                entity.Property(e => e.BillDate)
+                    .HasColumnName("Bill_Date")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.BillingId).HasColumnName("Billing_Id");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("Created_Date")
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.PatientId).HasColumnName("Patient_Id");
+
+                entity.HasOne(d => d.Patient)
+                    .WithMany(p => p.BillTable)
+                    .HasForeignKey(d => d.PatientId)
+                    .HasConstraintName("FK__Bill_Tabl__Patie__17F790F9");
             });
 
             modelBuilder.Entity<BloodGroup>(entity =>
@@ -519,6 +552,8 @@ namespace CMSByTeamJava.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.RoleId).HasColumnName("Role_Id");
+
                 entity.Property(e => e.StaffName)
                     .IsRequired()
                     .HasColumnName("Staff_Name")
@@ -534,6 +569,11 @@ namespace CMSByTeamJava.Models
                     .WithMany(p => p.Staff)
                     .HasForeignKey(d => d.GenderId)
                     .HasConstraintName("FK__Staff__Gender_Id__7F2BE32F");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Staff)
+                    .HasForeignKey(d => d.RoleId)
+                    .HasConstraintName("FK__Staff__Role_Id__14270015");
             });
 
             modelBuilder.Entity<TestView>(entity =>
