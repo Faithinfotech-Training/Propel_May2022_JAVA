@@ -1,4 +1,5 @@
 ﻿using CMSByTeamJava.Models;
+using CMSByTeamJava.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -30,7 +31,34 @@ namespace CMSByTeamJava.Repository
             return null;
         }
 
-        
 
+       //view model
+        public async Task<ActionResult<IEnumerable<TestPriscriptionViewModel>>> GetViewModelTestPrescription()
+        {
+            if (_context != null)
+            {
+                return await(from p in _context.Patient
+                             from s in _context.Staff
+                             from c in _context.Labtest
+                             from e in _context.TestView
+                             from f in _context.Testprescription
+
+
+                             where (s.StaffId == p.StaffId) && (e.TestprescriptionId == f.TestprescriptionId)&&
+                            (f.TestId == c.TestId)
+                             select new TestPriscriptionViewModel
+                             {
+                                 PatientId = p.PatientId,
+                                 PatientName = p.PatientName,
+                                 Mobile=p.Mobile,
+                                 StaffName = s.StaffName,
+                                 TestName = c.TestName
+
+
+
+                             }).ToListAsync();
+            }
+            return null;
+        }
     }
 }

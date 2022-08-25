@@ -9,5 +9,9 @@ namespace CMSByTeamJava.ViewModel
     {
         public int PatientId { get; set; }
         public string PatientName { get; set; }
+        public string Mobile { get; set; }
+        public string StaffName { get; set; }
+        public string TestName { get; set; }
+
     }
 }

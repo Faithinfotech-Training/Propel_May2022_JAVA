@@ -1,4 +1,5 @@
 ﻿using CMSByTeamJava.Models;
+using CMSByTeamJava.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,9 @@ namespace CMSByTeamJava.Repository
         //view the doctor s precription about lab test
         public Task<ActionResult<IEnumerable<Testprescription>>> GetTestprescription();
 
+
+        //view model for view
+        public Task<ActionResult<IEnumerable<TestPriscriptionViewModel>>> GetViewModelTestPrescription();
 
     }
 }
