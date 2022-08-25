@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CMSByTeamJava.Models;
 using CMSByTeamJava.Repository;
+using CMSByTeamJava.ViewModel;
 
 namespace CMSByTeamJava.Controllers
 {
@@ -91,7 +92,16 @@ namespace CMSByTeamJava.Controllers
         }
 
         #endregion
-        
+
+        // GET: api/Staffs/Doctor
+        [HttpGet]
+        [Route("Doctor")]
+
+        public async Task<ActionResult<IEnumerable<DoctorViewModel>>> GetViewDoctor()
+        {
+            return await _repository.GetViewDoctor();
+        }
+
     }
 
 }

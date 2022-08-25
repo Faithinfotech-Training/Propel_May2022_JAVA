@@ -1,4 +1,5 @@
 ﻿using CMSByTeamJava.Models;
+using CMSByTeamJava.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -29,8 +30,18 @@ namespace CMSByTeamJava.Repository
         //put medicine
         public Task<ActionResult<Medicine>> PutMedicine(Medicine medicine);
 
-        //post
+        //post medicine
         public Task<ActionResult<Medicine>> PostMedicine(Medicine medicine);
+
+        //get doctor
+
+        public Task<ActionResult<IEnumerable<DoctorViewModel>>> GetViewDoctor();
+
+
+
+
+
+
 
 
     }

@@ -1,4 +1,5 @@
 ﻿using CMSByTeamJava.Models;
+using CMSByTeamJava.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace CMSByTeamJava.Repository
         {
             _context = context;
         }
+      
         #region  get labtest
         //get labtest
         public async Task<ActionResult<IEnumerable<Labtest>>> GetLabtest()
@@ -48,12 +50,35 @@ namespace CMSByTeamJava.Repository
             if (_context != null)
             {
 
-                return await _context.Staff.Where(m => m.IsActive == true).Include(option => option.Doctor).ToListAsync();
+                return await _context.Staff.Where(m => m.IsActive == true).ToListAsync();
 
             }
             return null;
         }
+        #region view doctor
+        public async Task<ActionResult<IEnumerable<DoctorViewModel>>> GetViewDoctor()
+        {
+            if (_context != null)
+            {
+                return await(from s in _context.Staff
+                             from D in _context.Doctor
+                             from Sp in _context.Specialization
 
+                             where s.RoleId== 3 && D.SpecializationId == Sp.SpecializationId && s.StaffId == D.StaffId
+                             select new DoctorViewModel
+                             {
+                                 StaffId = s.StaffId,
+                                StaffName = s.StaffName,
+                                 SpecializationName = Sp.SpecializationName,
+                                 ConsultationFees = D.ConsultationFees
+
+
+
+                             }).ToListAsync();
+            }
+            return null;
+        }
+# endregion
         public async Task<ActionResult<Labtest>> PostLabtest(Labtest labtest)
         {
             if (_context != null)
