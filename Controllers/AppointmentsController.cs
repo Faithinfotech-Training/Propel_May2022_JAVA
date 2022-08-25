@@ -31,6 +31,29 @@ namespace CMSByTeamJava.Controllers
         #endregion
 
 
+        #region
+        [HttpPost]
+        public async Task<ActionResult<Patient>> PostAppointment([FromBody] Appointment appointment)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var newPatientId = await _repository.PostAppointment(appointment);
+
+                if (newPatientId != null)
+                {
+                    return (newPatientId);
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+            }
+            return BadRequest();
+        }
+
+        #endregion
 
         // GET: api/Appointments/5
         //[HttpGet("{id}")]

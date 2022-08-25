@@ -24,5 +24,20 @@ namespace CMSByTeamJava.Repository
         }
 
         #endregion
+
+        #region Add Appiontment
+
+        public async Task<ActionResult<Appointment>> PostPatient(Appointment appointment)
+        {
+            if (_context != null)
+            {
+                await _context.Appointment.AddAsync(appointment);
+                await _context.SaveChangesAsync();
+
+                return appointment;
+            }
+            return null;
+        }
+        #endregion
     }
 }
