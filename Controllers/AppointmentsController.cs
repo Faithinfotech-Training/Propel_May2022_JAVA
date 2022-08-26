@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CMSByTeamJava.Models;
 using CMSByTeamJava.Repository;
+using CMSByTeamJava.ViewModel;
 
 namespace CMSByTeamJava.Controllers
 {
@@ -33,16 +34,16 @@ namespace CMSByTeamJava.Controllers
 
         #region
         [HttpPost]
-        public async Task<ActionResult<Patient>> PostAppointment([FromBody] Appointment appointment)
+        public async Task<ActionResult<Appointment>> PostAppointment([FromBody] Appointment appointment)
         {
             if (ModelState.IsValid)
             {
 
-                var newPatientId = await _repository.PostAppointment(appointment);
+                var newAppointment = await _repository.PostAppointment(appointment);
 
-                if (newPatientId != null)
+                if (newAppointment != null)
                 {
-                    return (newPatientId);
+                    return (newAppointment);
                 }
                 else
                 {
@@ -52,7 +53,18 @@ namespace CMSByTeamJava.Controllers
             }
             return BadRequest();
         }
+    
 
+        #endregion
+
+        #region <<< viewModel to view AppointmentBill List>>>
+        [HttpGet]
+        [Route("vmgetAppointmentBill")]
+        public async Task<ActionResult<IEnumerable<AppointmentBillViewModel>>> GetViewModelAppointmentBill()
+        {
+            return await _repository.GetViewModelAppointmentBill();
+
+        }
         #endregion
 
         // GET: api/Appointments/5
