@@ -10,7 +10,7 @@ namespace CMSByTeamJava.Repository
     {
 
         #region Doctor view control
-        public Task<ActionResult<IEnumerable<Doctorsviewmodel>>> GetDoctorsViewModel();
+        public Task<ActionResult<IEnumerable<Doctorsviewmodel>>> GetDoctorsViewModel(int id);
         
         #endregion
 

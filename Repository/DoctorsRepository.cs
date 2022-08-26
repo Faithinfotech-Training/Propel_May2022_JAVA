@@ -21,7 +21,7 @@ namespace CMSByTeamJava.Repository
 
         #region Doctor view controller
 
-        public async Task<ActionResult<IEnumerable<Doctorsviewmodel>>> GetDoctorsViewModel()
+        public async Task<ActionResult<IEnumerable<Doctorsviewmodel>>> GetDoctorsViewModel(int id)
         {
             if (_context != null)
             {
@@ -31,8 +31,9 @@ namespace CMSByTeamJava.Repository
 
                 return await(from e in _context.Appointment
                              from d in _context.Patient
-                            
-                             where e.PatientId == d.PatientId & (e.AppointmentDate >= startDateTime && e.AppointmentDate <= endDateTime)
+                             from a in _context.Doctor 
+                             from b in _context.Users
+                             where e.PatientId == d.PatientId & (e.AppointmentDate >= startDateTime && e.AppointmentDate <= endDateTime) & (a.StaffId==b.StaffId )
                              select new Doctorsviewmodel
                              {
                                  TokenNo = e.TokenNo,

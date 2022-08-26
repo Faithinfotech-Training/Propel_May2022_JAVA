@@ -23,35 +23,35 @@ namespace CMSByTeamJava.Controllers
 
         // GET: api/Appointments
         #region
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointment()
-        {
-            return await _repository.GetAppointment();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointment()
+        //{
+        //    return await _repository.GetAppointment();
+        //}
         #endregion
 
 
         #region
-        [HttpPost]
-        public async Task<ActionResult<Patient>> PostAppointment([FromBody] Appointment appointment)
-        {
-            if (ModelState.IsValid)
-            {
+        //[HttpPost]
+        //public async Task<ActionResult<Patient>> PostAppointment([FromBody] Appointment appointment)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
 
-                var newPatientId = await _repository.PostAppointment(appointment);
+        //        var newPatientId = await _repository.PostAppointment(appointment);
 
-                if (newPatientId != null)
-                {
-                    return (newPatientId);
-                }
-                else
-                {
-                    return NotFound();
-                }
+        //        if (newPatientId != null)
+        //        {
+        //            return (newPatientId);
+        //        }
+        //        else
+        //        {
+        //            return NotFound();
+        //        }
 
-            }
-            return BadRequest();
-        }
+        //    }
+        //    return BadRequest();
+        //}
 
         #endregion
 

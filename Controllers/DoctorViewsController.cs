@@ -21,13 +21,21 @@ namespace CMSByTeamJava.Controllers
             _repository = repository;
         }
 
-        // GET: api/doctorViews/Dashboard
+        // GET: api/doctorViews/Dashboard/id
 
         [HttpGet("Dashboard")]
-        public async Task<ActionResult<IEnumerable<Doctorsviewmodel>>> GetDoctorsViewModel()
+        public async Task<ActionResult<IEnumerable<Doctorsviewmodel>>> GetDoctorsViewModel(int id)
         {
 
-            return await _repository.GetDoctorsViewModel();
+            //return await _repository.GetDoctorsViewModel();
+            var tblappoint = await _repository.GetDoctorsViewModel(id);
+
+            if (tblappoint == null)
+            {
+                return NotFound();
+            }
+
+            return tblappoint;
         }
 
         #endregion

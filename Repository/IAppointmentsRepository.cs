@@ -9,6 +9,6 @@ namespace CMSByTeamJava.Repository
     {
         public Task<ActionResult<IEnumerable<Appointment>>> GetAppointment();
 
-        public Task<ActionResult<Patient>> PostAppointment(Appointment appointment);
+        //public Task<ActionResult<Patient>> PostAppointment(Appointment appointment);
     }
 }
