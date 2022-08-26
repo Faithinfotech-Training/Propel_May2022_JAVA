@@ -36,6 +36,8 @@ namespace CMSByTeamJava
             services.AddScoped<IPharmacistRepository, pharmacistsRepository>();
             services.AddScoped<IPatientsRepository, PatientsRepository>();
             services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();
+            services.AddScoped<IDoctorsRepository, DoctorsRepository>();
+
 
             services.AddControllers().AddNewtonsoftJson(
                 options =>
@@ -46,6 +48,12 @@ namespace CMSByTeamJava
                     //enables to avoid infinte loop - Recursive
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
+
+
+
+
+            //Enable cors
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +63,14 @@ namespace CMSByTeamJava
             {
                 app.UseDeveloperExceptionPage();
             }
+
+
+
+
+            app.UseCors(x => x
+             .AllowAnyOrigin()
+             .AllowAnyMethod()
+             .AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
